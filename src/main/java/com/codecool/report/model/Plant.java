@@ -1,5 +1,7 @@
 package com.codecool.report.model;
 
+import com.codecool.report.model.marketplace.Marketplace;
+import com.codecool.report.model.status.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
