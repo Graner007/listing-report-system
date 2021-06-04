@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PlantDao {
 
-    void add(Plant artist);
+    void add(Plant plant);
     Plant find(int id);
     void remove(int id);
     void removeAll();
