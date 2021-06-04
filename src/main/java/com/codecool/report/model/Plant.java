@@ -17,17 +17,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-@Entity
 public class Plant {
 
-    @Id
     private UUID id;
 
     private String title;
 
     private String description;
 
-    @ManyToOne
     private Location location;
 
     private int listingPrice;
@@ -36,10 +33,8 @@ public class Plant {
 
     private int quantity;
 
-    @ManyToOne
     private Status status;
 
-    @ManyToOne
     private Marketplace marketplace;
 
     private LocalDate uploadTime;
