@@ -15,7 +15,7 @@ public class StatusDaoJdbc implements StatusDao {
     @Override
     public void add(Status status) {
         try {
-            String sql = "INSERT INTO listing_status (id, status_name VALUES (?, ?)";
+            String sql = "INSERT INTO listing_status (id, status_name) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, status.getId());
             statement.setString(2, status.getStatusName().getStatus());

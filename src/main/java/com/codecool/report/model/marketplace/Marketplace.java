@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Marketplace {
 
-    private int id;
+    private long id;
 
     private MarketplaceName marketplaceName;
 }
