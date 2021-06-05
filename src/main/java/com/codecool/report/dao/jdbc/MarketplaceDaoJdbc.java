@@ -17,7 +17,7 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
         try {
             String sql = "INSERT INTO plant (id, marketplace_name VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, marketplace.getId());
+            statement.setInt(1, marketplace.getId());
             statement.setString(2, marketplace.getMarketplaceName().getName());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();

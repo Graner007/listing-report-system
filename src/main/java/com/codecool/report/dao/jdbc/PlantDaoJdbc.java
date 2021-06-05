@@ -15,8 +15,8 @@ public class PlantDaoJdbc implements PlantDao {
     @Override
     public void add(Plant plant) {
         try {
-            String sql = "INSERT INTO plant (id, title, description, location_id, listing_price, currency," +
-                    " quantity, status_id, marketplace, upload_time, owner_email_address) " +
+            String sql = "INSERT INTO plant (id, title, description, inventory_item_location_id, listing_price, currency," +
+                    " quantity, listing_status, marketplace, upload_time, owner_email_address) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, plant.getTitle());
@@ -25,8 +25,8 @@ public class PlantDaoJdbc implements PlantDao {
             statement.setDouble(4, plant.getListingPrice());
             statement.setString(5, plant.getCurrency());
             statement.setInt(6, plant.getQuantity());
-            statement.setLong(7, plant.getStatus().getId());
-            statement.setLong(8, plant.getMarketplace().getId());
+            statement.setInt(7, plant.getStatus().getId());
+            statement.setInt(8, plant.getMarketplace().getId());
             statement.setDate(9, Date.valueOf(plant.getUploadTime()));
             statement.setString(10, plant.getOwnerEmailAddress());
             statement.executeUpdate();
