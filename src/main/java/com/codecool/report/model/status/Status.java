@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Status {
 
-    private int id;
+    private long id;
  
     private StatusName statusName;
 }
