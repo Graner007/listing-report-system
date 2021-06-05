@@ -7,9 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -27,9 +24,9 @@ public class Plant {
 
     private Location location;
 
-    private int listingPrice;
+    private double listingPrice;
 
-    private double currency;
+    private String currency;
 
     private int quantity;
 
