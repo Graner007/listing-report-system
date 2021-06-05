@@ -18,7 +18,7 @@ public class StatusService {
     private final StatusDao statusDao;
     private static final String LISTING_STATUS_API = "https://my.api.mockaroo.com/listingStatus?key=63304c70";
 
-    public void getAllStatus() throws ParseException {
+    public void getAllStatuses() throws ParseException {
         String data = ApiReader.getDataFromApi(LISTING_STATUS_API);
 
         JSONParser parse = new JSONParser();
