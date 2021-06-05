@@ -19,16 +19,17 @@ public class PlantDaoJdbc implements PlantDao {
                     " quantity, listing_status, marketplace, upload_time, owner_email_address) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, plant.getTitle());
-            statement.setString(2, plant.getDescription());
-            statement.setString(3, String.valueOf(plant.getLocation().getId()));
-            statement.setDouble(4, plant.getListingPrice());
-            statement.setString(5, plant.getCurrency());
-            statement.setInt(6, plant.getQuantity());
-            statement.setInt(7, plant.getStatus().getId());
-            statement.setInt(8, plant.getMarketplace().getId());
-            statement.setDate(9, Date.valueOf(plant.getUploadTime()));
-            statement.setString(10, plant.getOwnerEmailAddress());
+            statement.setObject(1, plant.getId());
+            statement.setString(2, plant.getTitle());
+            statement.setString(3, plant.getDescription());
+            statement.setString(4, String.valueOf(plant.getLocation().getId()));
+            statement.setDouble(5, plant.getListingPrice());
+            statement.setString(6, plant.getCurrency());
+            statement.setInt(7, plant.getQuantity());
+            statement.setInt(8, plant.getStatus().getId());
+            statement.setInt(9, plant.getMarketplace().getId());
+            statement.setDate(10, Date.valueOf(plant.getUploadTime()));
+            statement.setString(11, plant.getOwnerEmailAddress());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();

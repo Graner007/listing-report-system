@@ -15,16 +15,17 @@ public class LocationDaoJdbc implements LocationDao {
     @Override
     public void add(Location location) {
         try {
-            String sql = "INSERT INTO plant (id, manager_name, phone, address_primary, address_secondary, country," +
-                    "town, postal_code VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO location (id, manager_name, phone, address_primary, address_secondary, country," +
+                    "town, postal_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, location.getManagerName());
-            statement.setString(2, location.getPhone());
-            statement.setString(3, location.getAddressPrimary());
-            statement.setString(4, location.getAddressSecondary());
-            statement.setString(5, location.getCountry());
-            statement.setString(6, location.getTown());
-            statement.setString(7, location.getPostalCode());
+            statement.setObject(1, location.getId());
+            statement.setString(2, location.getManagerName());
+            statement.setString(3, location.getPhone());
+            statement.setString(4, location.getAddressPrimary());
+            statement.setString(5, location.getAddressSecondary());
+            statement.setString(6, location.getCountry());
+            statement.setString(7, location.getTown());
+            statement.setString(8, location.getPostalCode());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();

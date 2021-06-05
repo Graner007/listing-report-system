@@ -15,7 +15,7 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
     @Override
     public void add(Marketplace marketplace) {
         try {
-            String sql = "INSERT INTO plant (id, marketplace_name VALUES (?, ?)";
+            String sql = "INSERT INTO marketplace (id, marketplace_name VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, marketplace.getId());
             statement.setString(2, marketplace.getMarketplaceName().getName());

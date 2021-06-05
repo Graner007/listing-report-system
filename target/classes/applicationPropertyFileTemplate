@@ -1,0 +1,3 @@
+database={databaseName}
+username={databaseUsername}
+password={databasePassword}
