@@ -2,10 +2,13 @@ package com.codecool.report.dao.jdbc;
 
 import com.codecool.report.dao.LocationDao;
 import com.codecool.report.model.Location;
+import com.codecool.report.model.status.Status;
+import com.codecool.report.model.status.StatusName;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class LocationDaoJdbc implements LocationDao {
@@ -35,13 +38,23 @@ public class LocationDaoJdbc implements LocationDao {
     }
 
     @Override
-    public Location find(int id) {
+    public Location find(UUID id) {
         return null;
     }
 
     @Override
-    public void remove(int id) {
-
+    public boolean isExist(UUID id) {
+        try {
+            String sql = "SELECT id, manager_name, phone, address_primary, address_secondary, country, town, postal_code FROM location WHERE id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setObject(1, id);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return false;
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     @Override

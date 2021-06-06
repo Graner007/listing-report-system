@@ -1,12 +1,11 @@
 package com.codecool.report.model;
 
-import com.codecool.report.model.marketplace.Marketplace;
-import com.codecool.report.model.status.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ public class Plant {
 
     private String description;
 
-    private Location location;
+    private UUID locationId;
 
     private double listingPrice;
 
@@ -30,11 +29,11 @@ public class Plant {
 
     private int quantity;
 
-    private Status status;
+    private int statusId;
 
-    private Marketplace marketplace;
+    private int marketplaceId;
 
-    private LocalDate uploadTime;
+    private Date uploadTime;
 
     private String ownerEmailAddress;
 }

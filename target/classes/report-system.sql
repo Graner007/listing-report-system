@@ -20,20 +20,20 @@ CREATE TABLE plant (
                         quantity INTEGER NOT NULL,
                         listing_status INTEGER NOT NULL,
                         marketplace INTEGER NOT NULL,
-                        upload_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+                        upload_time TIMESTAMP WITHOUT TIME ZONE,
                         owner_email_address TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS public.location;
 CREATE TABLE location (
                       id UUID NOT NULL,
-                      manager_name TEXT NOT NULL,
+                      manager_name TEXT,
                       phone TEXT NOT NULL,
-                      address_primary TEXT NOT NUll,
-                      address_secondary TEXT NOT NUll,
-                      country TEXT NOT NULL,
-                      town TEXT NOT NULL,
-                      postal_code TEXT NOT NULL
+                      address_primary TEXT,
+                      address_secondary TEXT,
+                      country TEXT,
+                      town TEXT,
+                      postal_code TEXT
 );
 
 DROP TABLE IF EXISTS public.listing_status;

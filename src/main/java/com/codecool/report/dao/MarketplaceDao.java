@@ -8,7 +8,7 @@ public interface MarketplaceDao {
 
     void add(Marketplace marketplace);
     Marketplace find(int id);
-    void remove(int id);
+    boolean isExist(int id);
     void removeAll();
 
     List<Marketplace> getAll();
