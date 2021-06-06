@@ -16,7 +16,7 @@ public class MarketplaceService {
     private final MarketplaceDao marketplaceDao;
     private static final String MARKETPLACE_API = "https://my.api.mockaroo.com/marketplace?key=63304c70";
 
-    public void getMarketPlaces() throws ParseException {
+    public void getMarketPlace() throws ParseException {
         String data = ApiReader.getDataFromApi(MARKETPLACE_API);
 
         JSONParser parse = new JSONParser();
@@ -26,7 +26,7 @@ public class MarketplaceService {
             JSONObject obj = (JSONObject) arr.get(i);
 
             Marketplace marketplace = Marketplace.builder()
-                    .id((Long) obj.get("id"))
+                    .id(Integer.parseInt(String.valueOf(obj.get("id"))))
                     .marketplaceName(MarketplaceName.valueOf((String) obj.get("marketplace_name")))
                     .build();
 

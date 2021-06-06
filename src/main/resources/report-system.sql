@@ -20,7 +20,7 @@ CREATE TABLE plant (
                         quantity INTEGER NOT NULL,
                         listing_status INTEGER NOT NULL,
                         marketplace INTEGER NOT NULL,
-                        upload_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+                        upload_time TIMESTAMP WITHOUT TIME ZONE,
                         owner_email_address TEXT NOT NULL
 );
 

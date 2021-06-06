@@ -19,7 +19,7 @@ public class LocationService {
     private final LocationDao locationDao;
     private static final String LOCATION_API = "https://my.api.mockaroo.com/location?key=63304c70";
 
-    public void getAllLocations() throws ParseException {
+    public void getAllLocation() throws ParseException {
         String data = ApiReader.getDataFromApi(LOCATION_API);
 
         JSONParser parse = new JSONParser();

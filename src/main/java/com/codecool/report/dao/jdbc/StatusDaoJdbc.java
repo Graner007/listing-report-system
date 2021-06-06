@@ -2,6 +2,7 @@ package com.codecool.report.dao.jdbc;
 
 import com.codecool.report.dao.StatusDao;
 import com.codecool.report.model.status.Status;
+import com.codecool.report.model.status.StatusName;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
@@ -33,8 +34,18 @@ public class StatusDaoJdbc implements StatusDao {
     }
 
     @Override
-    public void remove(int id) {
-
+    public boolean isExist(int id) {
+        try {
+            String sql = "SELECT id, status_name FROM listing_status WHERE id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return false;
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     @Override

@@ -18,7 +18,7 @@ public class StatusService {
     private final StatusDao statusDao;
     private static final String LISTING_STATUS_API = "https://my.api.mockaroo.com/listingStatus?key=63304c70";
 
-    public void getAllStatuses() throws ParseException {
+    public void getAllStatus() throws ParseException {
         String data = ApiReader.getDataFromApi(LISTING_STATUS_API);
 
         JSONParser parse = new JSONParser();
@@ -28,7 +28,7 @@ public class StatusService {
             JSONObject obj = (JSONObject) arr.get(i);
 
             Status status =Status.builder()
-                    .id((long) obj.get("id"))
+                    .id(Integer.parseInt(String.valueOf(obj.get("id"))))
                     .statusName(StatusName.valueOf((String) obj.get("status_name")))
                     .build();
 

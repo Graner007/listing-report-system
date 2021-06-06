@@ -5,6 +5,7 @@ import com.codecool.report.model.Plant;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,13 +23,13 @@ public class PlantDaoJdbc implements PlantDao {
             statement.setObject(1, plant.getId());
             statement.setString(2, plant.getTitle());
             statement.setString(3, plant.getDescription());
-            statement.setString(4, String.valueOf(plant.getLocation().getId()));
+            statement.setObject(4, plant.getLocationId());
             statement.setDouble(5, plant.getListingPrice());
             statement.setString(6, plant.getCurrency());
-            statement.setInt(7, plant.getQuantity());
-            statement.setLong(8, plant.getStatus().getId());
-            statement.setLong(9, plant.getMarketplace().getId());
-            statement.setDate(10, Date.valueOf(plant.getUploadTime()));
+            statement.setLong(7, plant.getQuantity());
+            statement.setLong(8, plant.getStatusId());
+            statement.setLong(9, plant.getMarketplaceId());
+            statement.setDate(10, plant.getUploadTime());
             statement.setString(11, plant.getOwnerEmailAddress());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -41,11 +42,6 @@ public class PlantDaoJdbc implements PlantDao {
     @Override
     public Plant find(int id) {
         return null;
-    }
-
-    @Override
-    public void remove(int id) {
-
     }
 
     @Override
