@@ -73,4 +73,19 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
     public List<Marketplace> getAll() {
         return null;
     }
+
+    @Override
+    public int getIdByName(String marketplaceName) {
+        try {
+            String sql = "SELECT id FROM marketplace WHERE marketplace_name = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

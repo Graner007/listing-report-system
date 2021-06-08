@@ -10,6 +10,7 @@ public interface MarketplaceDao {
     Marketplace find(int id);
     boolean isExist(int id);
     void removeAll();
+    int getIdByName(String marketplace);
 
     List<Marketplace> getAll();
 }

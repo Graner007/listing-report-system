@@ -2,10 +2,13 @@ package com.codecool.report.dao.jdbc;
 
 import com.codecool.report.dao.PlantDao;
 import com.codecool.report.model.Plant;
+import com.codecool.report.model.marketplace.Marketplace;
+import com.codecool.report.model.marketplace.MarketplaceName;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -52,5 +55,33 @@ public class PlantDaoJdbc implements PlantDao {
     @Override
     public List<Plant> getAll() {
         return null;
+    }
+
+    @Override
+    public int getCount() {
+        try {
+            String sql = "SELECT COUNT(id) FROM plant";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1) - 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getEbayCount(int marketplaceId) {
+        try {
+            String sql = "SELECT COUNT(id) FROM plant WHERE plant.marketplace = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, marketplaceId);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

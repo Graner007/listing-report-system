@@ -6,6 +6,8 @@ import com.codecool.report.dao.PlantDao;
 import com.codecool.report.dao.StatusDao;
 import com.codecool.report.formatter.CsvOutputFormatter;
 import com.codecool.report.model.Plant;
+import com.codecool.report.model.marketplace.Marketplace;
+import com.codecool.report.model.marketplace.MarketplaceName;
 import com.codecool.report.util.ApiReader;
 import lombok.AllArgsConstructor;
 import org.json.simple.JSONArray;
@@ -30,6 +32,10 @@ public class PlantService {
     private final StatusDao statusDao;
     private final CsvOutputFormatter csvOutputFormatter = new CsvOutputFormatter();
     private static final String PLANT_API = "https://my.api.mockaroo.com/listing?key=63304c70";
+
+    public int getEbayCount() { return plantDao.getEbayCount(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+
+    public int getPlantCount() { return plantDao.getCount(); }
 
     public void getAllPlant() throws ParseException, IOException {
         String data = ApiReader.getDataFromApi(PLANT_API);

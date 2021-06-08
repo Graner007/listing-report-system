@@ -9,6 +9,8 @@ public interface PlantDao {
     void add(Plant plant);
     Plant find(int id);
     void removeAll();
+    int getCount();
+    int getEbayCount(int id);
 
     List<Plant> getAll();
 }
