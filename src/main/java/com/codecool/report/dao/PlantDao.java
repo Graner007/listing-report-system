@@ -11,8 +11,9 @@ public interface PlantDao {
     void removeAll();
     int getTotalCount();
     int getTotalMarketplaceCountById(int id);
-    int getTotalEbayPrice(int id);
-    double getAverageEbayPrice(int id);
+    int getTotalMarketplacePriceById(int id);
+    double getAverageMarketplacePriceById(int id);
+    String bestEmailLister();
 
     List<Plant> getAll();
 }

@@ -33,11 +33,15 @@ public class PlantService {
     private final CsvOutputFormatter csvOutputFormatter = new CsvOutputFormatter();
     private static final String PLANT_API = "https://my.api.mockaroo.com/listing?key=63304c70";
 
+    public double getAverageAmazonPrice() { return plantDao.getAverageMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.AMAZON.getName())); }
+
+    public int getTotalAmazonPrice() { return plantDao.getTotalMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.AMAZON.getName())); }
+
     public int getTotalAmazonCount() { return plantDao.getTotalMarketplaceCountById(marketplaceDao.getIdByName(MarketplaceName.AMAZON.getName())); }
 
-    public double getAverageEbayPrice() { return plantDao.getAverageEbayPrice(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+    public double getAverageEbayPrice() { return plantDao.getAverageMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
 
-    public int getTotalEbayPrice() { return plantDao.getTotalEbayPrice(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+    public int getTotalEbayPrice() { return plantDao.getTotalMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
 
     public int getTotalEbayCount() { return plantDao.getTotalMarketplaceCountById(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
 

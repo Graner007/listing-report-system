@@ -86,7 +86,7 @@ public class PlantDaoJdbc implements PlantDao {
     }
 
     @Override
-    public int getTotalEbayPrice(int marketplaceId) {
+    public int getTotalMarketplacePriceById(int marketplaceId) {
         try {
             String sql = "SELECT SUM(listing_price) FROM plant WHERE plant.marketplace = ?";
             PreparedStatement st = conn.prepareStatement(sql);
@@ -101,7 +101,7 @@ public class PlantDaoJdbc implements PlantDao {
     }
 
     @Override
-    public double getAverageEbayPrice(int marketplaceId) {
+    public double getAverageMarketplacePriceById(int marketplaceId) {
         try {
             String sql = "SELECT AVG(listing_price) FROM plant WHERE plant.marketplace = ?";
             PreparedStatement st = conn.prepareStatement(sql);
@@ -111,6 +111,20 @@ public class PlantDaoJdbc implements PlantDao {
                 return 0;
             double formattedResult = Double.parseDouble(String.format("%.2f", rs.getDouble(1)));
             return formattedResult;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String bestEmailLister() {
+        try {
+            String sql = "SELECT owner_email_address FROM plant GROUP BY owner_email_address LIMIT 1";
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return null;
+            return rs.getString(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
