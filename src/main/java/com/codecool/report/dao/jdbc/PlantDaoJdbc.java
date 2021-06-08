@@ -26,9 +26,9 @@ public class PlantDaoJdbc implements PlantDao {
             statement.setObject(4, plant.getLocationId());
             statement.setDouble(5, plant.getListingPrice());
             statement.setString(6, plant.getCurrency());
-            statement.setLong(7, plant.getQuantity());
-            statement.setLong(8, plant.getStatusId());
-            statement.setLong(9, plant.getMarketplaceId());
+            statement.setInt(7, plant.getQuantity());
+            statement.setInt(8, plant.getStatusId());
+            statement.setInt(9, plant.getMarketplaceId());
             statement.setDate(10, plant.getUploadTime());
             statement.setString(11, plant.getOwnerEmailAddress());
             statement.executeUpdate();

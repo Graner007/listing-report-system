@@ -18,7 +18,7 @@ public class StatusDaoJdbc implements StatusDao {
         try {
             String sql = "INSERT INTO listing_status (id, status_name) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, status.getId());
+            statement.setInt(1, status.getId());
             statement.setString(2, status.getStatusName().getStatus());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -36,15 +36,17 @@ public class StatusDaoJdbc implements StatusDao {
     @Override
     public boolean isExist(int id) {
         try {
-            String sql = "SELECT id, status_name FROM listing_status WHERE id = ?";
+            String sql = "SELECT EXISTS (SELECT id FROM listing_status WHERE id = ?)";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (!rs.next())
                 return false;
+            if (!rs.getBoolean(1))
+                return false;
             return true;
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 

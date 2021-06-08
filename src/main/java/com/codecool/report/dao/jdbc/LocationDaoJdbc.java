@@ -45,11 +45,13 @@ public class LocationDaoJdbc implements LocationDao {
     @Override
     public boolean isExist(UUID id) {
         try {
-            String sql = "SELECT id, manager_name, phone, address_primary, address_secondary, country, town, postal_code FROM location WHERE id = ?";
+            String sql = "SELECT EXISTS (SELECT id FROM location WHERE id = ?)";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setObject(1, id);
             ResultSet rs = st.executeQuery();
             if (!rs.next())
+                return false;
+            if (!rs.getBoolean(1))
                 return false;
             return true;
         } catch (SQLException e) {
