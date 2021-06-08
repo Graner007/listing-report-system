@@ -84,4 +84,35 @@ public class PlantDaoJdbc implements PlantDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int getEbayPrice(int marketplaceId) {
+        try {
+            String sql = "SELECT SUM(listing_price) FROM plant WHERE plant.marketplace = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, marketplaceId);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public double getAverageEbayPrice(int marketplaceId) {
+        try {
+            String sql = "SELECT AVG(listing_price) FROM plant WHERE plant.marketplace = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, marketplaceId);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            double formattedResult = Double.parseDouble(String.format("%.2f", rs.getDouble(1)));
+            return formattedResult;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -11,6 +11,8 @@ public interface PlantDao {
     void removeAll();
     int getCount();
     int getEbayCount(int id);
+    int getEbayPrice(int id);
+    double getAverageEbayPrice(int id);
 
     List<Plant> getAll();
 }

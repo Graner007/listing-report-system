@@ -33,6 +33,10 @@ public class PlantService {
     private final CsvOutputFormatter csvOutputFormatter = new CsvOutputFormatter();
     private static final String PLANT_API = "https://my.api.mockaroo.com/listing?key=63304c70";
 
+    public double getAverageEbayPrice() { return plantDao.getAverageEbayPrice(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+
+    public int getEbayPrice() { return plantDao.getEbayPrice(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+
     public int getEbayCount() { return plantDao.getEbayCount(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
 
     public int getPlantCount() { return plantDao.getCount(); }
