@@ -6,7 +6,6 @@ import com.codecool.report.dao.PlantDao;
 import com.codecool.report.dao.StatusDao;
 import com.codecool.report.formatter.CsvOutputFormatter;
 import com.codecool.report.model.Plant;
-import com.codecool.report.model.marketplace.Marketplace;
 import com.codecool.report.model.marketplace.MarketplaceName;
 import com.codecool.report.util.ApiReader;
 import lombok.AllArgsConstructor;
@@ -15,12 +14,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -33,17 +30,31 @@ public class PlantService {
     private final CsvOutputFormatter csvOutputFormatter = new CsvOutputFormatter();
     private static final String PLANT_API = "https://my.api.mockaroo.com/listing?key=63304c70";
 
-    public double getAverageAmazonPrice() { return plantDao.getAverageMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.AMAZON.getName())); }
+    public Map<String, Double> getAverageAmazonPriceMonthly() { return plantDao.getAverageMarketplacePriceByNameMonthly(MarketplaceName.AMAZON.getName()); }
 
-    public int getTotalAmazonPrice() { return plantDao.getTotalMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.AMAZON.getName())); }
+    public Map<String, Double> getTotalAmazonPriceMonthly() { return plantDao.getTotalMarketplacePriceByNameMonthly(MarketplaceName.AMAZON.getName()); }
 
-    public int getTotalAmazonCount() { return plantDao.getTotalMarketplaceCountById(marketplaceDao.getIdByName(MarketplaceName.AMAZON.getName())); }
+    public Map<String, Integer> getTotalAmazonCountMonthly() { return plantDao.getTotalMarketplaceCountByNameMonthly(MarketplaceName.AMAZON.getName()); }
 
-    public double getAverageEbayPrice() { return plantDao.getAverageMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+    public Map<String, Double> getAverageEbayPriceMonthly() { return plantDao.getAverageMarketplacePriceByNameMonthly(MarketplaceName.EBAY.getName()); }
 
-    public int getTotalEbayPrice() { return plantDao.getTotalMarketplacePriceById(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+    public Map<String, Double> getTotalEbayPriceMonthly() { return plantDao.getTotalMarketplacePriceByNameMonthly(MarketplaceName.EBAY.getName()); }
 
-    public int getTotalEbayCount() { return plantDao.getTotalMarketplaceCountById(marketplaceDao.getIdByName(MarketplaceName.EBAY.getName())); }
+    public Map<String, Integer> getTotalEbayCountMonthly() { return plantDao.getTotalMarketplaceCountByNameMonthly(MarketplaceName.EBAY.getName()); }
+
+    public String getBestEmailLister() { return plantDao.bestEmailLister(); }
+
+    public double getAverageAmazonPrice() { return plantDao.getAverageMarketplacePriceByName(MarketplaceName.AMAZON.getName()); }
+
+    public int getTotalAmazonPrice() { return plantDao.getTotalMarketplacePriceByName(MarketplaceName.AMAZON.getName()); }
+
+    public int getTotalAmazonCount() { return plantDao.getTotalMarketplaceCountByName(MarketplaceName.AMAZON.getName()); }
+
+    public double getAverageEbayPrice() { return plantDao.getAverageMarketplacePriceByName(MarketplaceName.EBAY.getName()); }
+
+    public int getTotalEbayPrice() { return plantDao.getTotalMarketplacePriceByName(MarketplaceName.EBAY.getName()); }
+
+    public int getTotalEbayCount() { return plantDao.getTotalMarketplaceCountByName(MarketplaceName.EBAY.getName()); }
 
     public int getTotalPlantCount() { return plantDao.getTotalCount(); }
 
