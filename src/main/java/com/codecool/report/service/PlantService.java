@@ -40,50 +40,58 @@ public class PlantService {
         for (int i = 0; i < arr.size(); i++) {
             JSONObject obj = (JSONObject) arr.get(i);
 
+            Plant plant = Plant.builder()
+                    .id(UUID.fromString((String) obj.get("id")))
+                    .title((String) obj.get("title"))
+                    .description((String) obj.get("description"))
+                    .locationId(UUID.fromString((String) obj.get("location_id")))
+                    .listingPrice(Double.parseDouble(String.valueOf(obj.get("listing_price"))))
+                    .currency((String) obj.get("currency"))
+                    .quantity(Integer.parseInt(String.valueOf(obj.get("quantity"))))
+                    .statusId(Integer.parseInt(String.valueOf(obj.get("listing_status"))))
+                    .marketplaceId(Integer.parseInt(String.valueOf(obj.get("marketplace"))))
+                    .uploadTime(getUploadTime(obj.get("upload_time")))
+                    .ownerEmailAddress((String) obj.get("owner_email_address"))
+                    .build();
+
             String[] invalidFields = new String[3];
 
-            if (!checkValueIsNotNull(obj.get("id")))
-                invalidFields[2] = "id";
-            else if (!checkValueIsNotNull(obj.get("title")))
-                invalidFields[2] = "title";
-            else if (!checkValueIsNotNull(obj.get("description")))
-                invalidFields[2] = "description";
-            else if (!checkValueIsNotNull(obj.get("location_id")) || !locationDao.isExist(UUID.fromString(String.valueOf(obj.get("location_id")))))
-                invalidFields[2] = "location_id";
-            else if (!validateListingPrice(Double.parseDouble(String.valueOf(obj.get("listing_price")))))
-                invalidFields[2] = "listing_price";
-            else if (!validateCurrency(obj.get("currency")))
-                invalidFields[2] = "currency";
-            else if (!validateQuantity(obj.get("quantity")))
-                invalidFields[2] = "quantity";
-            else if (!checkValueIsNotNull(obj.get("listing_status")) || !statusDao.isExist(Integer.parseInt(String.valueOf(obj.get("listing_status")))))
-                invalidFields[2] = "listing_status";
-            else if (!checkValueIsNotNull(obj.get("marketplace")) || !marketplaceDao.isExist(Integer.parseInt(String.valueOf(obj.get("marketplace")))))
-                invalidFields[2] = "marketplace";
-            else if (!validateEmail(obj.get("owner_email_address")))
-                invalidFields[2] = "owner_email_address";
-            else {
-                Plant plant = Plant.builder()
-                        .id(UUID.fromString((String) obj.get("id")))
-                        .title((String) obj.get("title"))
-                        .description((String) obj.get("description"))
-                        .locationId(UUID.fromString((String) obj.get("location_id")))
-                        .listingPrice(Double.parseDouble(String.valueOf(obj.get("listing_price"))))
-                        .currency((String) obj.get("currency"))
-                        .quantity(Integer.parseInt(String.valueOf(obj.get("quantity"))))
-                        .statusId(Integer.parseInt(String.valueOf(obj.get("listing_status"))))
-                        .marketplaceId(Integer.parseInt(String.valueOf(obj.get("marketplace"))))
-                        .uploadTime(getUploadTime(obj.get("upload_time")))
-                        .ownerEmailAddress((String) obj.get("owner_email_address"))
-                        .build();
+            String result = validatePlantFields(plant);
 
+            if (result.equals(""))
                 plantDao.add(plant);
-                continue;
+            else {
+                invalidFields[0] = String.valueOf(plant.getId());
+                invalidFields[2] = result;
+                csvOutputFormatter.printToFile(invalidFields);
             }
-
-            invalidFields[0] = String.valueOf(obj.get("id"));
-            csvOutputFormatter.printToFile(invalidFields);
         }
+    }
+
+    private String validatePlantFields(Plant plant) {
+        String wrongField = "";
+
+        if (!checkValueIsNotNull(plant.getId()))
+            wrongField = "id";
+        else if (!checkValueIsNotNull(plant.getTitle()))
+            wrongField = "title";
+        else if (!checkValueIsNotNull(plant.getDescription()))
+            wrongField = "description";
+        else if (!checkValueIsNotNull(plant.getLocationId()) || !locationDao.isExist(plant.getLocationId()))
+            wrongField = "location_id";
+        else if (!validateListingPrice(plant.getListingPrice()))
+            wrongField = "listing_price";
+        else if (!validateCurrency(plant.getCurrency()))
+            wrongField = "currency";
+        else if (!validateQuantity(plant.getQuantity()))
+            wrongField = "quantity";
+        else if (!checkValueIsNotNull(plant.getStatusId()) || !statusDao.isExist(plant.getStatusId()))
+            wrongField = "listing_status";
+        else if (!checkValueIsNotNull(plant.getMarketplaceId()) || !marketplaceDao.isExist(plant.getMarketplaceId()))
+            wrongField = "marketplace";
+        else if (!validateEmail(plant.getOwnerEmailAddress()))
+            wrongField = "owner_email_address";
+        return wrongField;
     }
 
     private Date getUploadTime(Object time) {
@@ -100,33 +108,23 @@ public class PlantService {
 
     private boolean checkValueIsNotNull(Object value) { return value != null; }
 
-    private boolean validateListingPrice(Object listingPrice) {
-        if (listingPrice != null) {
-            String[] value = String.valueOf(listingPrice).split("\\.");
-            return Integer.parseInt(value[0]) > 0 && value[1].length() == 2;
-        }
-
-        return false;
+    private boolean validateListingPrice(double listingPrice) {
+        String[] value = String.valueOf(listingPrice).split("\\.");
+        return Integer.parseInt(value[0]) > 0 && value[1].length() == 2;
     }
 
-    private boolean validateCurrency(Object currency) {
+    private boolean validateCurrency(String currency) {
         if (currency != null)
-            return String.valueOf(currency).length() == 3;
+            return currency.length() == 3;
 
         return false;
     }
 
-    private boolean validateQuantity(Object quantity) {
-        if (quantity != null) {
-            return Integer.parseInt(String.valueOf(quantity)) > 0;
-        }
+    private boolean validateQuantity(int quantity) { return quantity > 0; }
 
-        return false;
-    }
-
-    private boolean validateEmail(Object email) {
+    private boolean validateEmail(String email) {
         if (email != null)
-            return String.valueOf(email).contains("@");
+            return email.contains("@");
 
         return false;
     }
