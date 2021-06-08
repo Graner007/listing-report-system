@@ -9,9 +9,9 @@ public interface PlantDao {
     void add(Plant plant);
     Plant find(int id);
     void removeAll();
-    int getCount();
-    int getEbayCount(int id);
-    int getEbayPrice(int id);
+    int getTotalCount();
+    int getTotalMarketplaceCountById(int id);
+    int getTotalEbayPrice(int id);
     double getAverageEbayPrice(int id);
 
     List<Plant> getAll();

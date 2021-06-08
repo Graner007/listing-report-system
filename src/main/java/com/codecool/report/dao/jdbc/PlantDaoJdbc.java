@@ -58,7 +58,7 @@ public class PlantDaoJdbc implements PlantDao {
     }
 
     @Override
-    public int getCount() {
+    public int getTotalCount() {
         try {
             String sql = "SELECT COUNT(id) FROM plant";
             ResultSet rs = conn.createStatement().executeQuery(sql);
@@ -71,7 +71,7 @@ public class PlantDaoJdbc implements PlantDao {
     }
 
     @Override
-    public int getEbayCount(int marketplaceId) {
+    public int getTotalMarketplaceCountById(int marketplaceId) {
         try {
             String sql = "SELECT COUNT(id) FROM plant WHERE plant.marketplace = ?";
             PreparedStatement st = conn.prepareStatement(sql);
@@ -86,7 +86,7 @@ public class PlantDaoJdbc implements PlantDao {
     }
 
     @Override
-    public int getEbayPrice(int marketplaceId) {
+    public int getTotalEbayPrice(int marketplaceId) {
         try {
             String sql = "SELECT SUM(listing_price) FROM plant WHERE plant.marketplace = ?";
             PreparedStatement st = conn.prepareStatement(sql);
