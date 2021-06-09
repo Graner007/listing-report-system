@@ -40,7 +40,7 @@ public class MarketplaceService {
         return result;
     }
 
-    public void getMarketPlace() throws ParseException {
+    public void addMarketPlace() throws ParseException {
         List<Marketplace> marketplaces = downloadAllMarketplace();
         marketplaces.forEach(marketplace -> marketplaceDao.add(marketplace));
     }

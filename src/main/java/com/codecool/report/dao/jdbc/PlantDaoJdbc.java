@@ -217,11 +217,11 @@ public class PlantDaoJdbc implements PlantDao {
     @Override
     public void update(Plant plant) {
         try {
-            String sql = "UPDATE location SET title = ?, description = ?, inventory_item_location_id = ?, listing_price = ?, currency = ?," +
+            String sql = "UPDATE plant SET title = ?, description = ?, inventory_item_location_id = ?, listing_price = ?, currency = ?," +
                     " quantity = ?, listing_status = ?, marketplace = ?, upload_time = ?, owner_email_address = ? WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, plant.getTitle());
-            statement.setString(2, plant.getTitle());
+            statement.setString(2, plant.getDescription());
             statement.setObject(3, plant.getLocationId());
             statement.setDouble(4, plant.getListingPrice());
             statement.setString(5, plant.getCurrency());

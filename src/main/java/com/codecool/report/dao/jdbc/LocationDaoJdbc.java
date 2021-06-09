@@ -73,7 +73,7 @@ public class LocationDaoJdbc implements LocationDao {
     public void update(Location location) {
         try {
             String sql = "UPDATE location SET manager_name = ?, phone = ?, address_primary = ?, address_secondary = ?," +
-                    " country = ?, town = ?, postal_code WHERE id = ?";
+                    " country = ?, town = ?, postal_code = ? WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, location.getManagerName());
             statement.setString(2, location.getPhone());

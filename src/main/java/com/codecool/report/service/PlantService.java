@@ -62,7 +62,7 @@ public class PlantService {
 
     public int getTotalPlantCount() { return plantDao.getTotalCount(); }
 
-    private List<Plant> downloadAllPlant() throws ParseException, IOException {
+    private List<Plant> downloadAllPlant() throws ParseException {
         String data = ApiReader.getDataFromApi(PLANT_API);
         List<Plant> result = new ArrayList<>();
 

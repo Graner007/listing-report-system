@@ -48,7 +48,7 @@ public class LocationService {
         return result;
     }
 
-    public void getAllLocation() throws ParseException {
+    public void addAllLocation() throws ParseException {
         List<Location> locations = downloadAllLocation();
         locations.forEach(location -> locationDao.add(location));
     }
