@@ -213,4 +213,29 @@ public class PlantDaoJdbc implements PlantDao {
     public Map<String, String> bestEmailListerMonthly() {
         return null;
     }
+
+    @Override
+    public void update(Plant plant) {
+        try {
+            String sql = "UPDATE location SET title = ?, description = ?, inventory_item_location_id = ?, listing_price = ?, currency = ?," +
+                    " quantity = ?, listing_status = ?, marketplace = ?, upload_time = ?, owner_email_address = ? WHERE id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, plant.getTitle());
+            statement.setString(2, plant.getTitle());
+            statement.setObject(3, plant.getLocationId());
+            statement.setDouble(4, plant.getListingPrice());
+            statement.setString(5, plant.getCurrency());
+            statement.setInt(6, plant.getQuantity());
+            statement.setInt(7, plant.getStatusId());
+            statement.setInt(8, plant.getMarketplaceId());
+            statement.setDate(9, plant.getUploadTime());
+            statement.setString(10, plant.getOwnerEmailAddress());
+            statement.setObject(11, plant.getId());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

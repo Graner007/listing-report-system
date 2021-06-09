@@ -18,6 +18,8 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -60,8 +62,9 @@ public class PlantService {
 
     public int getTotalPlantCount() { return plantDao.getTotalCount(); }
 
-    public void getAllPlant() throws ParseException, IOException {
+    private List<Plant> downloadAllPlant() throws ParseException, IOException {
         String data = ApiReader.getDataFromApi(PLANT_API);
+        List<Plant> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();
         JSONArray arr = (JSONArray) parse.parse(data);
@@ -83,10 +86,37 @@ public class PlantService {
                     .ownerEmailAddress((String) obj.get("owner_email_address"))
                     .build();
 
+            result.add(plant);
+        }
+
+        return result;
+    }
+
+    public void addAllPlant() throws ParseException, IOException {
+        List<Plant> plants = downloadAllPlant();
+
+        for (Plant plant : plants) {
             String result = validatePlantFields(plant);
 
             if (result.equals(""))
                 plantDao.add(plant);
+            else {
+                importLog.setPlantId(String.valueOf(plant.getId()));
+                importLog.setMarketplaceName(marketplaceDao.find(plant.getMarketplaceId()).getMarketplaceName().getName());
+                importLog.setInvalidField(result);
+                csvOutputFormatter.printToFile(importLog);
+            }
+        }
+    }
+
+    public void updateAllPlant() throws ParseException, IOException {
+        List<Plant> plants = downloadAllPlant();
+
+        for (Plant plant : plants) {
+            String result = validatePlantFields(plant);
+
+            if (result.equals(""))
+                plantDao.update(plant);
             else {
                 importLog.setPlantId(String.valueOf(plant.getId()));
                 importLog.setMarketplaceName(marketplaceDao.find(plant.getMarketplaceId()).getMarketplaceName().getName());

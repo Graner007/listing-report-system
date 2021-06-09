@@ -10,6 +10,7 @@ public interface PlantDao {
     void add(Plant plant);
     Plant find(int id);
     void removeAll();
+    void update(Plant plant);
 
     int getTotalCount();
     int getTotalMarketplaceCountByName(String name);
