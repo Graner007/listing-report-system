@@ -10,6 +10,7 @@ public interface StatusDao {
     Status find(int id);
     boolean isExist(int id);
     void removeAll();
+    void update(Status status);
 
     List<Status> getAll();
 }

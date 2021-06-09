@@ -12,14 +12,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 @AllArgsConstructor
 public class StatusService {
 
     private final StatusDao statusDao;
     private static final String LISTING_STATUS_API = "https://my.api.mockaroo.com/listingStatus?key=63304c70";
 
-    public void getAllStatus() throws ParseException {
+    private List<Status> downloadAllStatus() throws ParseException {
         String data = ApiReader.getDataFromApi(LISTING_STATUS_API);
+        List<Status> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();
         JSONArray arr = (JSONArray) parse.parse(data);
@@ -32,7 +37,19 @@ public class StatusService {
                     .statusName(StatusName.valueOf((String) obj.get("status_name")))
                     .build();
 
-            statusDao.add(status);
+            result.add(status);
         }
+
+        return result;
+    }
+
+    public void addAllStatus() throws ParseException {
+        List<Status> statuses = downloadAllStatus();
+        statuses.forEach(status -> statusDao.add(status));
+    }
+
+    public void updateAllStatus() throws ParseException {
+        List<Status> statuses = downloadAllStatus();
+        statuses.forEach(status -> statusDao.update(status));
     }
 }
