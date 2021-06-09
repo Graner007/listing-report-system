@@ -2,7 +2,7 @@ package com.codecool.report.formatter;
 
 import java.io.IOException;
 
-public interface OutputFormatter<T> {
+public interface OutputFormatter {
 
-    void printToFile(String[] data) throws IOException;
+    void printToFile(Object data) throws IOException;
 }

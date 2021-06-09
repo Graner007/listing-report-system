@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Locale;
 
 @AllArgsConstructor
 public class MarketplaceDaoJdbc implements MarketplaceDao {
@@ -31,7 +32,7 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
     @Override
     public Marketplace find(int id) {
         try {
-            String sql = "SELECT id FROM marketplace WHERE id = ?";
+            String sql = "SELECT id, marketplace_name FROM marketplace WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -39,7 +40,7 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
                 return null;
             Marketplace marketplace = Marketplace.builder()
                     .id(rs.getInt(1))
-                    .marketplaceName(MarketplaceName.valueOf(rs.getString(2)))
+                    .marketplaceName(MarketplaceName.valueOf(rs.getString(2).toUpperCase(Locale.ROOT)))
                     .build();
             return marketplace;
         } catch (SQLException e) {
@@ -72,5 +73,20 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
     @Override
     public List<Marketplace> getAll() {
         return null;
+    }
+
+    @Override
+    public int getIdByName(String marketplaceName) {
+        try {
+            String sql = "SELECT id FROM marketplace WHERE marketplace_name = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

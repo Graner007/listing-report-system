@@ -5,8 +5,9 @@ import com.codecool.report.model.Plant;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 public class PlantDaoJdbc implements PlantDao {
@@ -51,6 +52,165 @@ public class PlantDaoJdbc implements PlantDao {
 
     @Override
     public List<Plant> getAll() {
+        return null;
+    }
+
+    @Override
+    public int getTotalCount() {
+        try {
+            String sql = "SELECT COUNT(id) FROM plant";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1) - 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getTotalMarketplaceCountByName(String marketplaceName) {
+        try {
+            String sql = "SELECT COUNT(p.id)\n" +
+                    "FROM plant AS p\n" +
+                    "INNER JOIN marketplace AS m ON m.id = p.marketplace\n" +
+                    "WHERE m.marketplace_name = ?;";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getTotalMarketplacePriceByName(String marketplaceName) {
+        try {
+            String sql = "SELECT SUM(p.listing_price)\n" +
+                    "FROM plant AS p\n" +
+                    "INNER JOIN marketplace AS m ON m.id = p.marketplace\n" +
+                    "WHERE m.marketplace_name = ?;";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public double getAverageMarketplacePriceByName(String marketplaceName) {
+        try {
+            String sql = "SELECT AVG(p.listing_price)\n" +
+                    "FROM plant AS p\n" +
+                    "INNER JOIN marketplace AS m ON m.id = p.marketplace\n" +
+                    "WHERE m.marketplace_name = ?;";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return 0;
+            double formattedResult = Double.parseDouble(String.format("%.2f", rs.getDouble(1)));
+            return formattedResult;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String bestEmailLister() {
+        try {
+            String sql = "SELECT owner_email_address FROM plant GROUP BY owner_email_address LIMIT 1";
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return null;
+            return rs.getString(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Map<String, Integer> getTotalMarketplaceCountByNameMonthly(String marketplaceName) {
+        try {
+            String sql = "SELECT\n" +
+                    "    CONCAT(date_trunc('month', p.upload_time)::date, ':',\n" +
+                    "    (date_trunc('month', p.upload_time) + interval '1 month -1 day')::date) as date,\n" +
+                    "    COUNT(*)\n" +
+                    "FROM plant AS p\n" +
+                    "INNER JOIN marketplace m ON m.id = p.marketplace\n" +
+                    "WHERE m.marketplace_name = ?\n" +
+                    "GROUP BY date_trunc('month', p.upload_time)\n" +
+                    "ORDER BY date;";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            Map<String, Integer> result = new HashMap<>();
+            while (rs.next())
+                result.put(rs.getString(1), rs.getInt(2));
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Map<String, Double> getTotalMarketplacePriceByNameMonthly(String marketplaceName) {
+        try {
+            String sql = "SELECT\n" +
+                    "    CONCAT(date_trunc('month', p.upload_time)::date, ':',\n" +
+                    "    (date_trunc('month', p.upload_time) + interval '1 month -1 day')::date) as date,\n" +
+                    "    SUM(p.listing_price)\n" +
+                    "FROM plant AS p\n" +
+                    "INNER JOIN marketplace m ON m.id = p.marketplace\n" +
+                    "WHERE m.marketplace_name = ?\n" +
+                    "GROUP BY date_trunc('month', p.upload_time)\n" +
+                    "ORDER BY date;";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            Map<String, Double> result = new HashMap<>();
+            while (rs.next())
+                result.put(rs.getString(1), rs.getDouble(2));
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Map<String, Double> getAverageMarketplacePriceByNameMonthly(String marketplaceName) {
+        try {
+            String sql = "SELECT\n" +
+                    "    CONCAT(date_trunc('month', p.upload_time)::date, ':',\n" +
+                    "    (date_trunc('month', p.upload_time) + interval '1 month -1 day')::date) as date,\n" +
+                    "    AVG(p.listing_price)\n" +
+                    "FROM plant AS p\n" +
+                    "INNER JOIN marketplace m ON m.id = p.marketplace\n" +
+                    "WHERE m.marketplace_name = ?\n" +
+                    "GROUP BY date_trunc('month', p.upload_time)\n" +
+                    "ORDER BY date;";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, marketplaceName);
+            ResultSet rs = st.executeQuery();
+            Map<String, Double> result = new HashMap<>();
+            while (rs.next())
+                result.put(rs.getString(1), Double.parseDouble(String.format("%.2f", rs.getDouble(2))));
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Map<String, String> bestEmailListerMonthly() {
         return null;
     }
 }
