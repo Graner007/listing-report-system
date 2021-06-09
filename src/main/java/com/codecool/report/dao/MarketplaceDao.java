@@ -11,6 +11,7 @@ public interface MarketplaceDao {
     boolean isExist(int id);
     void removeAll();
     int getIdByName(String marketplace);
+    void update(Marketplace marketplace);
 
     List<Marketplace> getAll();
 }

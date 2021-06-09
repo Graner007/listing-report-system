@@ -89,4 +89,19 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void update(Marketplace marketplace) {
+        try {
+            String sql = "UPDATE marketplace SET marketplace_name = ? WHERE id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, marketplace.getMarketplaceName().getName());
+            statement.setInt(2, marketplace.getId());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
