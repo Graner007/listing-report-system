@@ -11,6 +11,7 @@ public interface LocationDao {
     Location find(UUID id);
     boolean isExist(UUID id);
     void removeAll();
+    void update(Location location);
 
     List<Location> getAll();
 }

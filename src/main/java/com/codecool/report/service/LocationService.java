@@ -11,6 +11,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,8 +21,9 @@ public class LocationService {
     private final LocationDao locationDao;
     private static final String LOCATION_API = "https://my.api.mockaroo.com/location?key=63304c70";
 
-    public void getAllLocation() throws ParseException {
+    private List<Location> downloadAllLocation() throws ParseException {
         String data = ApiReader.getDataFromApi(LOCATION_API);
+        List<Location> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();
         JSONArray arr = (JSONArray) parse.parse(data);
@@ -39,7 +42,19 @@ public class LocationService {
                     .postalCode(String.valueOf(obj.get("postal_code")))
                     .build();
 
-            locationDao.add(location);
+            result.add(location);
         }
+
+        return result;
+    }
+
+    public void getAllLocation() throws ParseException {
+        List<Location> locations = downloadAllLocation();
+        locations.forEach(location -> locationDao.add(location));
+    }
+
+    public void updateAllLocation() throws ParseException {
+        List<Location> locations = downloadAllLocation();
+        locations.forEach(location -> locationDao.update(location));
     }
 }

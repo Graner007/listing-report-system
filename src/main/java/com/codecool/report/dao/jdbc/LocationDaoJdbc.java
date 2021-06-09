@@ -68,4 +68,25 @@ public class LocationDaoJdbc implements LocationDao {
     public List<Location> getAll() {
         return null;
     }
+
+    @Override
+    public void update(Location location) {
+        try {
+            String sql = "UPDATE location SET manager_name = ?, phone = ?, address_primary = ?, address_secondary = ?, country = ?, town = ?, postal_code WHERE id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, location.getManagerName());
+            statement.setString(2, location.getPhone());
+            statement.setString(3, location.getAddressPrimary());
+            statement.setString(4, location.getAddressSecondary());
+            statement.setString(5, location.getCountry());
+            statement.setString(6, location.getTown());
+            statement.setString(7, location.getPostalCode());
+            statement.setObject(8, location.getId());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
