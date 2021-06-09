@@ -10,14 +10,18 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 public class MarketplaceService {
 
     private final MarketplaceDao marketplaceDao;
     private static final String MARKETPLACE_API = "https://my.api.mockaroo.com/marketplace?key=63304c70";
 
-    public void getMarketPlace() throws ParseException {
+    private List<Marketplace> downloadAllMarketplace() throws ParseException {
         String data = ApiReader.getDataFromApi(MARKETPLACE_API);
+        List<Marketplace> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();
         JSONArray arr = (JSONArray) parse.parse(data);
@@ -30,7 +34,19 @@ public class MarketplaceService {
                     .marketplaceName(MarketplaceName.valueOf((String) obj.get("marketplace_name")))
                     .build();
 
-            marketplaceDao.add(marketplace);
+            result.add(marketplace);
         }
+
+        return result;
+    }
+
+    public void addMarketPlace() throws ParseException {
+        List<Marketplace> marketplaces = downloadAllMarketplace();
+        marketplaces.forEach(marketplace -> marketplaceDao.add(marketplace));
+    }
+
+    public void updateMarketPlace() throws ParseException {
+        List<Marketplace> marketplaces = downloadAllMarketplace();
+        marketplaces.forEach(marketplace -> marketplaceDao.update(marketplace));
     }
 }

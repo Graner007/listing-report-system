@@ -59,4 +59,19 @@ public class StatusDaoJdbc implements StatusDao {
     public List<Status> getAll() {
         return null;
     }
+
+    @Override
+    public void update(Status status) {
+        try {
+            String sql = "UPDATE listing_status SET status_name = ? WHERE id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, status.getStatusName().getStatus());
+            statement.setInt(2, status.getId());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
