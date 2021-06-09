@@ -208,4 +208,9 @@ public class PlantDaoJdbc implements PlantDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Map<String, String> bestEmailListerMonthly() {
+        return null;
+    }
 }

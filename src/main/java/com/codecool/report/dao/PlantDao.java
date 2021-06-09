@@ -20,6 +20,7 @@ public interface PlantDao {
     Map<String, Integer> getTotalMarketplaceCountByNameMonthly(String name);
     Map<String, Double> getTotalMarketplacePriceByNameMonthly(String name);
     Map<String, Double> getAverageMarketplacePriceByNameMonthly(String name);
+    Map<String, String> bestEmailListerMonthly();
 
     List<Plant> getAll();
 }
