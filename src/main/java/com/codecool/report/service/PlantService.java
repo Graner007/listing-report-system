@@ -135,6 +135,15 @@ public class PlantService {
         }
     }
 
+    public boolean removeAllPlant() throws IOException, ParseException {
+        if (!isPlantEmpty()) {
+            plantDao.removeAll();
+            addAllPlant();
+            return true;
+        }
+        return false;
+    }
+
     public boolean isPlantEmpty() { return plantDao.isEmpty(); }
 
     private String validatePlantFields(Plant plant) {

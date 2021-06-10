@@ -52,6 +52,7 @@ public class LocationService {
         if (isLocationEmpty()) {
             List<Location> locations = downloadAllLocation();
             locations.forEach(location -> locationDao.add(location));
+            locationDao.addForeignKey();
             return true;
         }
         return false;
@@ -64,6 +65,15 @@ public class LocationService {
             List<Location> locations = downloadAllLocation();
             locations.forEach(location -> locationDao.update(location));
         }
+    }
+
+    public boolean removeAllLocation() throws ParseException {
+        if (!isLocationEmpty()) {
+            locationDao.removeAll();
+            addAllLocation();
+            return true;
+        }
+        return false;
     }
 
     public boolean isLocationEmpty() { return locationDao.isEmpty(); }

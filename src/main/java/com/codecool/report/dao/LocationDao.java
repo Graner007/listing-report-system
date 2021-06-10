@@ -13,6 +13,7 @@ public interface LocationDao {
     boolean isEmpty();
     void removeAll();
     void update(Location location);
+    void addForeignKey();
 
     List<Location> getAll();
 }
