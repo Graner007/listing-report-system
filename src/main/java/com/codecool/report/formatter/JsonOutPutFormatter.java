@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class JsonOutPutFormatter implements OutputFormatter {
 
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String JSON_FILE_PATH = "./result/";
     private static final String JSON_FILE_NAME = "report-";
     private static final String EXTENSION = ".json";
@@ -26,7 +26,5 @@ public class JsonOutPutFormatter implements OutputFormatter {
         printWriter.print(gson.toJson(List.of(report)) + "\n");
 
         printWriter.close();
-
-        System.out.println("Report made");
     }
 }
