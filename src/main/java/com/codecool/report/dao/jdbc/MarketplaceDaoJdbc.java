@@ -83,7 +83,13 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
 
     @Override
     public void removeAll() {
-
+        try {
+            String sql = "DELETE FROM marketplace";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

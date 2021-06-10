@@ -77,7 +77,13 @@ public class LocationDaoJdbc implements LocationDao {
 
     @Override
     public void removeAll() {
-
+        try {
+            String sql = "DELETE FROM location";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -68,7 +68,13 @@ public class StatusDaoJdbc implements StatusDao {
 
     @Override
     public void removeAll() {
-
+        try {
+            String sql = "DELETE FROM listing_status";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
