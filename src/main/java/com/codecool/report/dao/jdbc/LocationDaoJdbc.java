@@ -60,6 +60,22 @@ public class LocationDaoJdbc implements LocationDao {
     }
 
     @Override
+    public boolean isEmpty() {
+        try {
+            String sql = "SELECT COUNT(id) FROM location";
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return false;
+            if (!(rs.getInt(1) == 0))
+                return false;
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void removeAll() {
 
     }

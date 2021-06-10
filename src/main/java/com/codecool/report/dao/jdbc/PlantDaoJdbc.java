@@ -238,4 +238,20 @@ public class PlantDaoJdbc implements PlantDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public boolean isEmpty() {
+        try {
+            String sql = "SELECT COUNT(id) FROM plant";
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next())
+                return false;
+            if (!(rs.getInt(1) == 0))
+                return false;
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
