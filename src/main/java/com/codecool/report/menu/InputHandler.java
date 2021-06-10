@@ -12,7 +12,6 @@ public class InputHandler {
     public static int getIntInput() {
         while (true) {
             try {
-                System.out.print("Hello");
                 int num = scanner.nextInt();
                 int menuOptionNumber = ViewMenu.getMenuOptionsSize();
                 if (num <= menuOptionNumber && num > 0)
