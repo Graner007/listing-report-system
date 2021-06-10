@@ -9,6 +9,7 @@ public interface StatusDao {
     void add(Status status);
     Status find(int id);
     boolean isExist(int id);
+    boolean isEmpty();
     void removeAll();
     void update(Status status);
 
