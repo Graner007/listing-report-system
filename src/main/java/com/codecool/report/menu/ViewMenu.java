@@ -2,7 +2,7 @@ package com.codecool.report.menu;
 
 public class ViewMenu {
 
-    private static final String[] menuOptions = {"Update database", "Create report", "Create report and Upload to FTP server"};
+    private static final String[] menuOptions = {"Update database", "Create report", "Create report and Upload to FTP server", "Exit program"};
 
     public static void displayMenu() {
         System.out.println("Hi! Welcome to listing report system!\n" +
