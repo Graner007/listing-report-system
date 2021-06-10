@@ -13,8 +13,8 @@ public class DatabaseConnection {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
         dataSource.setDatabaseName(propertyReader.getDatabaseName());
-        dataSource.setUser(propertyReader.getUsername());
-        dataSource.setPassword(propertyReader.getPassword());
+        dataSource.setUser(propertyReader.getDatabaseUsername());
+        dataSource.setPassword(propertyReader.getDatabasePassword());
 
         return dataSource.getConnection();
     }

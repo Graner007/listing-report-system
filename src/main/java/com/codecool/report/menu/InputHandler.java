@@ -1,13 +1,13 @@
 package com.codecool.report.menu;
 
+import com.codecool.report.util.PrintColor;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputHandler {
 
     private static final Scanner scanner = new Scanner(System.in);
-    public static final String TEXT_RED = "\u001B[31m";
-    public static final String TEXT_RESET = "\u001B[0m";
 
     public static int getIntInput() {
         while (true) {
@@ -16,11 +16,11 @@ public class InputHandler {
                 int menuOptionNumber = ViewMenu.getMenuOptionsSize();
                 if (num <= menuOptionNumber && num > 0)
                     return num;
-                System.out.println(TEXT_RED + "Input number must be range of 1 and " + menuOptionNumber + "!" + TEXT_RESET);
+                System.out.println(PrintColor.TEXT_RED.getUnicode() + "Input number must be range of 1 and " + menuOptionNumber + "!" + PrintColor.TEXT_RESET.getUnicode());
                 continue;
             } catch (InputMismatchException e) {
                 scanner.nextLine();
-                System.out.println(TEXT_RED + "Input must be a number!" + TEXT_RESET);
+                System.out.println(PrintColor.TEXT_RED.getUnicode() + "Input must be a number!" + PrintColor.TEXT_RESET.getUnicode());
                 continue;
             }
         }

@@ -23,9 +23,15 @@ public class PropertyReader {
         return appProps;
     }
 
-    public String getDatabaseName() { return getPropertyFile().getProperty("database"); }
+    protected String getDatabaseName() { return getPropertyFile().getProperty("database"); }
 
-    public String getUsername() { return getPropertyFile().getProperty("username"); }
+    protected String getDatabaseUsername() { return getPropertyFile().getProperty("database-username"); }
 
-    public String getPassword() { return getPropertyFile().getProperty("password"); }
+    protected String getDatabasePassword() { return getPropertyFile().getProperty("database-password"); }
+
+    protected String getFtpServerHost() { return getPropertyFile().getProperty("ftp-host"); }
+
+    protected String getFtpServerUsername() { return getPropertyFile().getProperty("ftp-username"); }
+
+    protected String getFtpServerPassword() { return getPropertyFile().getProperty("ftp-password"); }
 }
