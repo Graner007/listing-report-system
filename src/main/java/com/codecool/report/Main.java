@@ -53,7 +53,7 @@ public class Main {
                     operation.updateDatabase();
                     break;
                 case 3:
-                    //TODO remove db and after fill up db
+                    operation.removeAndFillUpDatabase();
                     break;
                 case 4:
                     operation.createReport();

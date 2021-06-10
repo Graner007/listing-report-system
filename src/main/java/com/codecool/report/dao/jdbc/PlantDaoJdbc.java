@@ -47,7 +47,13 @@ public class PlantDaoJdbc implements PlantDao {
 
     @Override
     public void removeAll() {
-
+        try {
+            String sql = "DELETE FROM plant";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

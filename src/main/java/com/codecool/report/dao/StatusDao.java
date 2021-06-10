@@ -12,6 +12,7 @@ public interface StatusDao {
     boolean isEmpty();
     void removeAll();
     void update(Status status);
+    void addForeignKey();
 
     List<Status> getAll();
 }

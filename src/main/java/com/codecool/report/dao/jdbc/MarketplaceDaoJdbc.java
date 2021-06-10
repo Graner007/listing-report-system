@@ -83,7 +83,16 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
 
     @Override
     public void removeAll() {
-
+        try {
+            String sqlForeignKeyDrop = "ALTER TABLE plant DROP CONSTRAINT fk_marketplace_id";
+            String sqlDeleteTableContent = "DELETE FROM marketplace";
+            PreparedStatement statement1 = conn.prepareStatement(sqlForeignKeyDrop, Statement.RETURN_GENERATED_KEYS);
+            statement1.executeUpdate();
+            PreparedStatement statement2 = conn.prepareStatement(sqlDeleteTableContent, Statement.RETURN_GENERATED_KEYS);
+            statement2.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -116,6 +125,18 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addForeignKey() {
+        try {
+            String sql = "ALTER TABLE ONLY plant\n" +
+                    "    ADD CONSTRAINT fk_marketplace_id FOREIGN KEY (marketplace) REFERENCES marketplace(id);";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

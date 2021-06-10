@@ -13,6 +13,7 @@ public interface MarketplaceDao {
     void removeAll();
     int getIdByName(String marketplace);
     void update(Marketplace marketplace);
+    void addForeignKey();
 
     List<Marketplace> getAll();
 }

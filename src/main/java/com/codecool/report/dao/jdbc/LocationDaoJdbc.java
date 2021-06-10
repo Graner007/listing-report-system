@@ -77,7 +77,16 @@ public class LocationDaoJdbc implements LocationDao {
 
     @Override
     public void removeAll() {
-
+        try {
+            String sqlForeignKeyDrop = "ALTER TABLE plant DROP CONSTRAINT fk_inventory_item_location_id";
+            String sqlDeleteTableContent = "DELETE FROM location";
+            PreparedStatement statement1 = conn.prepareStatement(sqlForeignKeyDrop, Statement.RETURN_GENERATED_KEYS);
+            statement1.executeUpdate();
+            PreparedStatement statement2 = conn.prepareStatement(sqlDeleteTableContent, Statement.RETURN_GENERATED_KEYS);
+            statement2.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -102,6 +111,18 @@ public class LocationDaoJdbc implements LocationDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addForeignKey() {
+        try {
+            String sql = "ALTER TABLE ONLY plant\n" +
+                    "    ADD CONSTRAINT fk_inventory_item_location_id FOREIGN KEY (inventory_item_location_id) REFERENCES location(id);";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -25,7 +25,8 @@ public class Operation {
     public static final String TEXT_RESET = "\u001B[0m";
 
     public void fillUpDatabase() throws ParseException, IOException {
-        if (statusService.addAllStatus() && marketplaceService.addMarketPlace() && locationService.addAllLocation() && plantService.addAllPlant())
+        if (statusService.addAllStatus() && marketplaceService.addMarketPlace() &&
+                locationService.addAllLocation() && plantService.addAllPlant())
             System.out.println("Database Filled up.");
         else
             System.out.println(TEXT_RED + "Your database is not empty! Please remove or update your database." + TEXT_RESET);
@@ -38,6 +39,14 @@ public class Operation {
         plantService.updateAllPlant();
 
         System.out.println(TEXT_GREEN + "Database Updated." + TEXT_RESET);
+    }
+
+    public void removeAndFillUpDatabase() throws ParseException, IOException {
+        if (statusService.removeAllStatus() && marketplaceService.removeAllMarketplace()
+                && locationService.removeAllLocation() && plantService.removeAllPlant())
+            System.out.println("Database removed and filled up.");
+        else
+            System.out.println(TEXT_RED + "Your database is empty! Please add or update your database." + TEXT_RESET);
     }
 
     public Report createReport() throws IOException {

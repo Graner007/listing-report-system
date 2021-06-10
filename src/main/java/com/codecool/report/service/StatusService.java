@@ -47,6 +47,7 @@ public class StatusService {
         if (isStatusEmpty()) {
             List<Status> statuses = downloadAllStatus();
             statuses.forEach(status -> statusDao.add(status));
+            statusDao.addForeignKey();
             return true;
         }
         return false;
@@ -59,6 +60,15 @@ public class StatusService {
             List<Status> statuses = downloadAllStatus();
             statuses.forEach(status -> statusDao.update(status));
         }
+    }
+
+    public boolean removeAllStatus() throws ParseException {
+        if (!isStatusEmpty()) {
+            statusDao.removeAll();
+            addAllStatus();
+            return true;
+        }
+        return false;
     }
 
     public boolean isStatusEmpty() { return statusDao.isEmpty(); }

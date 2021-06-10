@@ -44,6 +44,7 @@ public class MarketplaceService {
         if (isMarketplaceEmpty()) {
             List<Marketplace> marketplaces = downloadAllMarketplace();
             marketplaces.forEach(marketplace -> marketplaceDao.add(marketplace));
+            marketplaceDao.addForeignKey();
             return true;
         }
         return false;
@@ -57,6 +58,15 @@ public class MarketplaceService {
             List<Marketplace> marketplaces = downloadAllMarketplace();
             marketplaces.forEach(marketplace -> marketplaceDao.update(marketplace));
         }
+    }
+
+    public boolean removeAllMarketplace() throws ParseException {
+        if (!isMarketplaceEmpty()) {
+            marketplaceDao.removeAll();
+            addMarketPlace();
+            return true;
+        }
+        return false;
     }
 
     public boolean isMarketplaceEmpty() { return marketplaceDao.isEmpty(); }

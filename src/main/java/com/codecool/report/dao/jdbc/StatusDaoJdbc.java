@@ -68,7 +68,16 @@ public class StatusDaoJdbc implements StatusDao {
 
     @Override
     public void removeAll() {
-
+        try {
+            String sqlForeignKeyDrop = "ALTER TABLE plant DROP CONSTRAINT fk_listing_status_id";
+            String sqlDeleteTableContent = "DELETE FROM listing_status";
+            PreparedStatement statement1 = conn.prepareStatement(sqlForeignKeyDrop, Statement.RETURN_GENERATED_KEYS);
+            statement1.executeUpdate();
+            PreparedStatement statement2 = conn.prepareStatement(sqlDeleteTableContent, Statement.RETURN_GENERATED_KEYS);
+            statement2.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -86,6 +95,18 @@ public class StatusDaoJdbc implements StatusDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addForeignKey() {
+        try {
+            String sql = "ALTER TABLE ONLY plant\n" +
+                    "    ADD CONSTRAINT fk_listing_status_id FOREIGN KEY (listing_status) REFERENCES listing_status(id);";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
