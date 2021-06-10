@@ -43,13 +43,25 @@ public class StatusService {
         return result;
     }
 
-    public void addAllStatus() throws ParseException {
-        List<Status> statuses = downloadAllStatus();
-        statuses.forEach(status -> statusDao.add(status));
+    public boolean addAllStatus() throws ParseException {
+        if (isStatusEmpty()) {
+            List<Status> statuses = downloadAllStatus();
+            statuses.forEach(status -> statusDao.add(status));
+            return true;
+        }
+        return false;
     }
 
     public void updateAllStatus() throws ParseException {
-        List<Status> statuses = downloadAllStatus();
-        statuses.forEach(status -> statusDao.update(status));
+        if (isStatusEmpty())
+            addAllStatus();
+        else {
+            List<Status> statuses = downloadAllStatus();
+            statuses.forEach(status -> statusDao.update(status));
+        }
     }
+
+    public boolean isStatusEmpty() { return statusDao.isEmpty(); }
+
+
 }

@@ -48,13 +48,23 @@ public class LocationService {
         return result;
     }
 
-    public void addAllLocation() throws ParseException {
-        List<Location> locations = downloadAllLocation();
-        locations.forEach(location -> locationDao.add(location));
+    public boolean addAllLocation() throws ParseException {
+        if (isLocationEmpty()) {
+            List<Location> locations = downloadAllLocation();
+            locations.forEach(location -> locationDao.add(location));
+            return true;
+        }
+        return false;
     }
 
     public void updateAllLocation() throws ParseException {
-        List<Location> locations = downloadAllLocation();
-        locations.forEach(location -> locationDao.update(location));
+        if (isLocationEmpty())
+            addAllLocation();
+        else {
+            List<Location> locations = downloadAllLocation();
+            locations.forEach(location -> locationDao.update(location));
+        }
     }
+
+    public boolean isLocationEmpty() { return locationDao.isEmpty(); }
 }

@@ -92,39 +92,50 @@ public class PlantService {
         return result;
     }
 
-    public void addAllPlant() throws ParseException, IOException {
-        List<Plant> plants = downloadAllPlant();
+    public boolean addAllPlant() throws ParseException, IOException {
+        if (isPlantEmpty()) {
+            List<Plant> plants = downloadAllPlant();
 
-        for (Plant plant : plants) {
-            String result = validatePlantFields(plant);
+            for (Plant plant : plants) {
+                String result = validatePlantFields(plant);
 
-            if (result.equals(""))
-                plantDao.add(plant);
-            else {
-                importLog.setPlantId(String.valueOf(plant.getId()));
-                importLog.setMarketplaceName(marketplaceDao.find(plant.getMarketplaceId()).getMarketplaceName().getName());
-                importLog.setInvalidField(result);
-                csvOutputFormatter.printToFile(importLog);
+                if (result.equals(""))
+                    plantDao.add(plant);
+                else {
+                    importLog.setPlantId(String.valueOf(plant.getId()));
+                    importLog.setMarketplaceName(marketplaceDao.find(plant.getMarketplaceId()).getMarketplaceName().getName());
+                    importLog.setInvalidField(result);
+                    csvOutputFormatter.printToFile(importLog);
+                }
             }
+            return true;
         }
+        return false;
     }
 
     public void updateAllPlant() throws ParseException, IOException {
-        List<Plant> plants = downloadAllPlant();
+        if (isPlantEmpty()) {
+            addAllPlant();
+        }
+        else {
+            List<Plant> plants = downloadAllPlant();
 
-        for (Plant plant : plants) {
-            String result = validatePlantFields(plant);
+            for (Plant plant : plants) {
+                String result = validatePlantFields(plant);
 
-            if (result.equals(""))
-                plantDao.update(plant);
-            else {
-                importLog.setPlantId(String.valueOf(plant.getId()));
-                importLog.setMarketplaceName(marketplaceDao.find(plant.getMarketplaceId()).getMarketplaceName().getName());
-                importLog.setInvalidField(result);
-                csvOutputFormatter.printToFile(importLog);
+                if (result.equals(""))
+                    plantDao.update(plant);
+                else {
+                    importLog.setPlantId(String.valueOf(plant.getId()));
+                    importLog.setMarketplaceName(marketplaceDao.find(plant.getMarketplaceId()).getMarketplaceName().getName());
+                    importLog.setInvalidField(result);
+                    csvOutputFormatter.printToFile(importLog);
+                }
             }
         }
     }
+
+    public boolean isPlantEmpty() { return plantDao.isEmpty(); }
 
     private String validatePlantFields(Plant plant) {
         String wrongField = "";

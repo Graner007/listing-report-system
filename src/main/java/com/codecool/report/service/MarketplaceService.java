@@ -40,13 +40,24 @@ public class MarketplaceService {
         return result;
     }
 
-    public void addMarketPlace() throws ParseException {
-        List<Marketplace> marketplaces = downloadAllMarketplace();
-        marketplaces.forEach(marketplace -> marketplaceDao.add(marketplace));
+    public boolean addMarketPlace() throws ParseException {
+        if (isMarketplaceEmpty()) {
+            List<Marketplace> marketplaces = downloadAllMarketplace();
+            marketplaces.forEach(marketplace -> marketplaceDao.add(marketplace));
+            return true;
+        }
+        return false;
     }
 
     public void updateMarketPlace() throws ParseException {
-        List<Marketplace> marketplaces = downloadAllMarketplace();
-        marketplaces.forEach(marketplace -> marketplaceDao.update(marketplace));
+        if (isMarketplaceEmpty()) {
+            addMarketPlace();
+        }
+        else {
+            List<Marketplace> marketplaces = downloadAllMarketplace();
+            marketplaces.forEach(marketplace -> marketplaceDao.update(marketplace));
+        }
     }
+
+    public boolean isMarketplaceEmpty() { return marketplaceDao.isEmpty(); }
 }
