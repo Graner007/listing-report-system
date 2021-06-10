@@ -1,3 +1,7 @@
 database={databaseName}
-username={databaseUsername}
-password={databasePassword}
+database-username={databaseUsername}
+database-password={databasePassword}
+
+ftp-host={ftpServerHostname}
+ftp-username={ftpServerUsername}
+ftp-password={ftpServerPassword}

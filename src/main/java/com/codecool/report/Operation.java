@@ -1,5 +1,6 @@
 package com.codecool.report;
 
+import com.codecool.report.config.FtpServerConnection;
 import com.codecool.report.formatter.JsonOutPutFormatter;
 import com.codecool.report.formatter.OutputFormatter;
 import com.codecool.report.model.Report;
@@ -7,6 +8,7 @@ import com.codecool.report.service.LocationService;
 import com.codecool.report.service.MarketplaceService;
 import com.codecool.report.service.PlantService;
 import com.codecool.report.service.StatusService;
+import com.codecool.report.util.PrintColor;
 import lombok.AllArgsConstructor;
 import org.json.simple.parser.ParseException;
 
@@ -20,16 +22,15 @@ public class Operation {
     private final LocationService locationService;
     private final PlantService plantService;
 
-    public static final String TEXT_RED = "\u001B[31m";
-    public static final String TEXT_GREEN = "\u001B[32m";
-    public static final String TEXT_RESET = "\u001B[0m";
+    private final FtpServerConnection ftpServerConnection = new FtpServerConnection();
+    private final OutputFormatter formatter = new JsonOutPutFormatter();
 
     public void fillUpDatabase() throws ParseException, IOException {
         if (statusService.addAllStatus() && marketplaceService.addMarketPlace() &&
                 locationService.addAllLocation() && plantService.addAllPlant())
-            System.out.println("Database Filled up.");
+            System.out.println(PrintColor.TEXT_GREEN.getUnicode() + "Database Filled up." + PrintColor.TEXT_GREEN.getUnicode());
         else
-            System.out.println(TEXT_RED + "Your database is not empty! Please remove or update your database." + TEXT_RESET);
+            System.out.println(PrintColor.TEXT_RED.getUnicode() + "Your database is not empty! Please remove or update your database." + PrintColor.TEXT_RESET.getUnicode());
     }
 
     public void updateDatabase() throws ParseException, IOException {
@@ -38,21 +39,21 @@ public class Operation {
         locationService.updateAllLocation();
         plantService.updateAllPlant();
 
-        System.out.println(TEXT_GREEN + "Database Updated." + TEXT_RESET);
+        System.out.println(PrintColor.TEXT_GREEN.getUnicode() + "Database Updated." + PrintColor.TEXT_RESET.getUnicode());
     }
 
     public void removeAndFillUpDatabase() throws ParseException, IOException {
         if (statusService.removeAllStatus() && marketplaceService.removeAllMarketplace()
                 && locationService.removeAllLocation() && plantService.removeAllPlant())
-            System.out.println("Database removed and filled up.");
+            System.out.println(PrintColor.TEXT_GREEN.getUnicode() + "Database removed and filled up." + PrintColor.TEXT_RESET.getUnicode());
         else
-            System.out.println(TEXT_RED + "Your database is empty! Please add or update your database." + TEXT_RESET);
+            System.out.println(PrintColor.TEXT_RED.getUnicode() + "Your database is empty! Please add or update your database." + PrintColor.TEXT_RESET.getUnicode());
     }
 
-    public Report createReport() throws IOException {
+    public void createReport() throws IOException {
         if (statusService.isStatusEmpty() && marketplaceService.isMarketplaceEmpty() && locationService.isLocationEmpty() && plantService.isPlantEmpty()) {
-            System.out.println(TEXT_RED + "Your database is empty! Please fill up your database." + TEXT_RESET);
-            return null;
+            System.out.println(PrintColor.TEXT_RED.getUnicode() + "Your database is empty! Please fill up your database." + PrintColor.TEXT_RESET.getUnicode());
+            return;
         }
 
         Report report = new Report();
@@ -82,11 +83,14 @@ public class Operation {
         report.setBestListerEmailAddress(plantService.getBestEmailLister());
         report.setBestListerEmailAddressOfTheMonth(null);
 
-        OutputFormatter formatter = new JsonOutPutFormatter();
         formatter.printToFile(report);
 
-        System.out.println(TEXT_GREEN + "Report is made." + TEXT_RESET);
-        return report;
+        System.out.println(PrintColor.TEXT_GREEN.getUnicode() + "Report is made." + PrintColor.TEXT_RESET.getUnicode());
+    }
+
+    public void createReportAndUploadToFtpServer() throws IOException {
+        createReport();
+        ftpServerConnection.uploadJsonFile();
     }
 
     public void exitProgram() {
