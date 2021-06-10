@@ -10,6 +10,7 @@ public interface LocationDao {
     void add(Location location);
     Location find(UUID id);
     boolean isExist(UUID id);
+    boolean isEmpty();
     void removeAll();
     void update(Location location);
 

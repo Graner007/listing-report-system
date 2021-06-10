@@ -11,6 +11,7 @@ public interface PlantDao {
     Plant find(int id);
     void removeAll();
     void update(Plant plant);
+    boolean isEmpty();
 
     int getTotalCount();
     int getTotalMarketplaceCountByName(String name);
