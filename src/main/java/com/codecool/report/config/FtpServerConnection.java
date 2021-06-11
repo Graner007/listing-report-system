@@ -23,7 +23,7 @@ public class FtpServerConnection {
 
             File file = getLatestFileFromDir(DIRECTORY_PATH);
             String filename = file.getName();
-            fis = new FileInputStream(file.getPath());
+            fis = new FileInputStream(file.getAbsolutePath());
 
             client.storeFile(filename, fis);
             client.logout();
@@ -41,7 +41,7 @@ public class FtpServerConnection {
         }
     }
 
-    public File getLatestFileFromDir(String dirPath){
+    private File getLatestFileFromDir(String dirPath){
         File dir = new File(dirPath);
         File[] files = dir.listFiles();
 
