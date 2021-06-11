@@ -21,8 +21,9 @@ public class FtpServerConnection {
             client.connect(propertyReader.getFtpServerHost());
             client.login(propertyReader.getFtpServerUsername(), propertyReader.getFtpServerPassword());
 
-            String filename = getLatestFileFromDir(DIRECTORY_PATH);
-            fis = new FileInputStream(filename);
+            File file = getLatestFileFromDir(DIRECTORY_PATH);
+            String filename = file.getName();
+            fis = new FileInputStream(file.getPath());
 
             client.storeFile(filename, fis);
             client.logout();
@@ -40,7 +41,7 @@ public class FtpServerConnection {
         }
     }
 
-    private String getLatestFileFromDir(String dirPath){
+    public File getLatestFileFromDir(String dirPath){
         File dir = new File(dirPath);
         File[] files = dir.listFiles();
 
@@ -52,6 +53,6 @@ public class FtpServerConnection {
             if (lastModifiedFile.lastModified() < files[i].lastModified())
                 lastModifiedFile = files[i];
 
-        return lastModifiedFile.getPath();
+        return lastModifiedFile;
     }
 }
