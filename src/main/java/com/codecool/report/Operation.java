@@ -81,7 +81,7 @@ public class Operation {
 
         //email
         report.setBestListerEmailAddress(plantService.getBestEmailLister());
-        report.setBestListerEmailAddressOfTheMonth(null);
+        report.setBestListerEmailAddressOfTheMonth(plantService.getBestEmailListerMonthly());
 
         formatter.printToFile(report);
 
