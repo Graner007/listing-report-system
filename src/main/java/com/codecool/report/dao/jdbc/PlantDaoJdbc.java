@@ -217,7 +217,20 @@ public class PlantDaoJdbc implements PlantDao {
 
     @Override
     public Map<String, String> bestEmailListerMonthly() {
-        return null;
+        try {
+            String sql = "SELECT DISTINCT ON (date_trunc('month', p.upload_time)) date_trunc('month', p.upload_time) AS date, p.owner_email_address, COUNT(p.owner_email_address) AS counter\n" +
+                    "FROM plant p\n" +
+                    "GROUP BY date, p.owner_email_address\n" +
+                    "ORDER BY date, counter DESC;";
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            Map<String, String> result = new HashMap<>();
+            while (rs.next())
+                result.put(rs.getString(1), rs.getString(2));
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
