@@ -65,7 +65,6 @@ public class StatusService {
 
     public boolean removeAllStatus() throws ParseException {
         if (!isStatusEmpty()) {
-            System.out.println("Removing database");
             statusDao.removeAll();
             addAllStatus();
             return true;
