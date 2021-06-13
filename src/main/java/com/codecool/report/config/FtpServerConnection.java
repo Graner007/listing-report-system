@@ -30,7 +30,7 @@ public class FtpServerConnection {
             client.storeFile(filename, fis);
             client.logout();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(PrintColor.TEXT_RED.getUnicode() + "Can not connect to Ftp server!" + PrintColor.TEXT_RESET.getUnicode());
         } finally {
             try {
                 if (fis != null) {
@@ -39,7 +39,7 @@ public class FtpServerConnection {
                 System.out.println(PrintColor.TEXT_GREEN.getUnicode() + "Json file uploaded." + PrintColor.TEXT_RESET.getUnicode());
                 client.disconnect();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(PrintColor.TEXT_RED.getUnicode() + "Something went wrong with the file" + PrintColor.TEXT_RESET.getUnicode());
             }
         }
     }
