@@ -2,11 +2,9 @@ package com.codecool.report.dao.jdbc;
 
 import com.codecool.report.dao.StatusDao;
 import com.codecool.report.model.status.Status;
-import com.codecool.report.model.status.StatusName;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
-import java.util.List;
 
 @AllArgsConstructor
 public class StatusDaoJdbc implements StatusDao {
@@ -26,11 +24,6 @@ public class StatusDaoJdbc implements StatusDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Status find(int id) {
-        return null;
     }
 
     @Override
@@ -78,11 +71,6 @@ public class StatusDaoJdbc implements StatusDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<Status> getAll() {
-        return null;
     }
 
     @Override

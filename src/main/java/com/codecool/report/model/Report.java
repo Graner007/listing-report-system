@@ -19,13 +19,13 @@ public class Report {
 
     private int totalEbayListingPrice;
 
-    private double AverageEbayListingPrice;
+    private double averageEbayListingPrice;
 
     private int totalAmazonListingCount;
 
     private int totalAmazonListingPrice;
 
-    private double AverageAmazonListingPrice;
+    private double averageAmazonListingPrice;
 
     private String bestListerEmailAddress;
 

@@ -1,8 +1,7 @@
 package com.codecool.report.service;
 
+import com.codecool.report.config.PropertyReader;
 import com.codecool.report.dao.StatusDao;
-import com.codecool.report.model.marketplace.Marketplace;
-import com.codecool.report.model.marketplace.MarketplaceName;
 import com.codecool.report.model.status.Status;
 import com.codecool.report.model.status.StatusName;
 import com.codecool.report.util.ApiReader;
@@ -20,10 +19,10 @@ import java.util.Locale;
 public class StatusService {
 
     private final StatusDao statusDao;
-    private static final String LISTING_STATUS_API = "https://my.api.mockaroo.com/listingStatus?key=63304c70";
+    private final PropertyReader propertyReader = new PropertyReader();
 
     private List<Status> downloadAllStatus() throws ParseException {
-        String data = ApiReader.getDataFromApi(LISTING_STATUS_API);
+        String data = ApiReader.getDataFromApi(propertyReader.getListingStatusApiUrl());
         List<Status> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();
@@ -45,6 +44,7 @@ public class StatusService {
 
     public boolean addAllStatus() throws ParseException {
         if (isStatusEmpty()) {
+            System.out.println("Filling up database...");
             List<Status> statuses = downloadAllStatus();
             statuses.forEach(status -> statusDao.add(status));
             statusDao.addForeignKey();
@@ -57,6 +57,7 @@ public class StatusService {
         if (isStatusEmpty())
             addAllStatus();
         else {
+            System.out.println("Updating database...");
             List<Status> statuses = downloadAllStatus();
             statuses.forEach(status -> statusDao.update(status));
         }
@@ -64,6 +65,7 @@ public class StatusService {
 
     public boolean removeAllStatus() throws ParseException {
         if (!isStatusEmpty()) {
+            System.out.println("Removing database");
             statusDao.removeAll();
             addAllStatus();
             return true;

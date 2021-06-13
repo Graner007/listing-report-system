@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ApiReader {
 
     public static String getDataFromApi(String path) {
-        String inline = "";
+        StringBuilder inline = new StringBuilder();
 
         try {
             URL url = new URL(path);
@@ -16,16 +16,16 @@ public class ApiReader {
             conn.setRequestMethod("GET");
             conn.connect();
 
-            int responsecode = conn.getResponseCode();
+            int responseCode = conn.getResponseCode();
 
             if (conn.getResponseCode() != 200)
-                throw new RuntimeException("HttpResponseCode: " +responsecode);
+                throw new RuntimeException("HttpResponseCode: " +responseCode);
             else
             {
                 Scanner sc = new Scanner(url.openStream());
 
                 while (sc.hasNext())
-                    inline += sc.nextLine();
+                    inline.append(sc.nextLine());
 
                 sc.close();
             }
@@ -36,6 +36,6 @@ public class ApiReader {
             e.printStackTrace();
         }
 
-        return inline;
+        return inline.toString();
     }
 }

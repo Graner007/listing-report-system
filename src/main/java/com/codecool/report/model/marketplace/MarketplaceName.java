@@ -5,7 +5,7 @@ public enum MarketplaceName {
     EBAY("ebay"),
     AMAZON("amazon");
 
-    private String name;
+    private final String name;
 
     MarketplaceName(String name) { this.name = name; }
 

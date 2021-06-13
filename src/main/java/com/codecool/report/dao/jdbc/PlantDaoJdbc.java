@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @AllArgsConstructor
 public class PlantDaoJdbc implements PlantDao {
@@ -41,11 +41,6 @@ public class PlantDaoJdbc implements PlantDao {
     }
 
     @Override
-    public Plant find(int id) {
-        return null;
-    }
-
-    @Override
     public void removeAll() {
         try {
             String sql = "DELETE FROM plant";
@@ -54,11 +49,6 @@ public class PlantDaoJdbc implements PlantDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<Plant> getAll() {
-        return null;
     }
 
     @Override
@@ -122,8 +112,7 @@ public class PlantDaoJdbc implements PlantDao {
             ResultSet rs = st.executeQuery();
             if (!rs.next())
                 return 0;
-            double formattedResult = Double.parseDouble(String.format("%.2f", rs.getDouble(1)));
-            return formattedResult;
+            return Double.parseDouble(String.format("%.2f", rs.getDouble(1)));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -158,9 +147,13 @@ public class PlantDaoJdbc implements PlantDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, marketplaceName);
             ResultSet rs = st.executeQuery();
-            Map<String, Integer> result = new HashMap<>();
-            while (rs.next())
-                result.put(rs.getString(1), rs.getInt(2));
+            Map<String, Integer> result = new TreeMap<>();
+            while (rs.next()) {
+                if (rs.getString(1).equals(":"))
+                    result.put("notDated", rs.getInt(2));
+                else
+                    result.put(rs.getString(1), rs.getInt(2));
+            }
             return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -182,9 +175,14 @@ public class PlantDaoJdbc implements PlantDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, marketplaceName);
             ResultSet rs = st.executeQuery();
-            Map<String, Double> result = new HashMap<>();
-            while (rs.next())
-                result.put(rs.getString(1), rs.getDouble(2));
+            Map<String, Double> result = new TreeMap<>();
+            while (rs.next()){
+                if (rs.getString(1).equals(":"))
+                    result.put("notDated", rs.getDouble(2));
+                else
+                    result.put(rs.getString(1), rs.getDouble(2));
+            }
+
             return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -206,9 +204,13 @@ public class PlantDaoJdbc implements PlantDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, marketplaceName);
             ResultSet rs = st.executeQuery();
-            Map<String, Double> result = new HashMap<>();
-            while (rs.next())
-                result.put(rs.getString(1), Double.parseDouble(String.format("%.2f", rs.getDouble(2))));
+            Map<String, Double> result = new TreeMap<>();
+            while (rs.next()) {
+                if (rs.getString(1).equals(":"))
+                    result.put("notDated", Double.parseDouble(String.format("%.2f", rs.getDouble(2))));
+                else
+                    result.put(rs.getString(1), Double.parseDouble(String.format("%.2f", rs.getDouble(2))));
+            }
             return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -224,9 +226,13 @@ public class PlantDaoJdbc implements PlantDao {
                     "ORDER BY date, counter DESC;";
             PreparedStatement st = conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            Map<String, String> result = new HashMap<>();
-            while (rs.next())
-                result.put(rs.getString(1), rs.getString(2));
+            Map<String, String> result = new TreeMap<>();
+            while (rs.next()) {
+                if (rs.getString(1) == null)
+                    result.put("notDated", rs.getString(2));
+                else
+                    result.put(rs.getString(1), rs.getString(2));
+            }
             return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);

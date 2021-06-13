@@ -6,7 +6,7 @@ public enum PrintColor {
     TEXT_GREEN("\u001B[32m"),
     TEXT_RESET("\u001B[0m");
 
-    private String unicode;
+    private final String unicode;
 
     PrintColor(String unicode) { this.unicode = unicode; }
 

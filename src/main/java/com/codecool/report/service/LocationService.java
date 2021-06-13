@@ -1,9 +1,8 @@
 package com.codecool.report.service;
 
+import com.codecool.report.config.PropertyReader;
 import com.codecool.report.dao.LocationDao;
 import com.codecool.report.model.Location;
-import com.codecool.report.model.marketplace.Marketplace;
-import com.codecool.report.model.marketplace.MarketplaceName;
 import com.codecool.report.util.ApiReader;
 import lombok.AllArgsConstructor;
 import org.json.simple.JSONArray;
@@ -19,17 +18,17 @@ import java.util.UUID;
 public class LocationService {
 
     private final LocationDao locationDao;
-    private static final String LOCATION_API = "https://my.api.mockaroo.com/location?key=63304c70";
+    private final PropertyReader propertyReader = new PropertyReader();
 
     private List<Location> downloadAllLocation() throws ParseException {
-        String data = ApiReader.getDataFromApi(LOCATION_API);
+        String data = ApiReader.getDataFromApi(propertyReader.getLocationApiUrl());
         List<Location> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();
         JSONArray arr = (JSONArray) parse.parse(data);
 
-        for (int i = 0; i < arr.size(); i++) {
-            JSONObject obj = (JSONObject) arr.get(i);
+        for (Object o : arr) {
+            JSONObject obj = (JSONObject) o;
 
             Location location = Location.builder()
                     .id(UUID.fromString((String) obj.get("id")))
@@ -51,7 +50,7 @@ public class LocationService {
     public boolean addAllLocation() throws ParseException {
         if (isLocationEmpty()) {
             List<Location> locations = downloadAllLocation();
-            locations.forEach(location -> locationDao.add(location));
+            locations.forEach(locationDao::add);
             locationDao.addForeignKey();
             return true;
         }
@@ -63,7 +62,7 @@ public class LocationService {
             addAllLocation();
         else {
             List<Location> locations = downloadAllLocation();
-            locations.forEach(location -> locationDao.update(location));
+            locations.forEach(locationDao::update);
         }
     }
 

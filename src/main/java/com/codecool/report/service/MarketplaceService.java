@@ -1,5 +1,6 @@
 package com.codecool.report.service;
 
+import com.codecool.report.config.PropertyReader;
 import com.codecool.report.dao.MarketplaceDao;
 import com.codecool.report.model.marketplace.Marketplace;
 import com.codecool.report.model.marketplace.MarketplaceName;
@@ -17,10 +18,10 @@ import java.util.List;
 public class MarketplaceService {
 
     private final MarketplaceDao marketplaceDao;
-    private static final String MARKETPLACE_API = "https://my.api.mockaroo.com/marketplace?key=63304c70";
+    private final PropertyReader propertyReader = new PropertyReader();
 
     private List<Marketplace> downloadAllMarketplace() throws ParseException {
-        String data = ApiReader.getDataFromApi(MARKETPLACE_API);
+        String data = ApiReader.getDataFromApi(propertyReader.getMarketplaceApiUrl());
         List<Marketplace> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();

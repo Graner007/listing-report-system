@@ -6,7 +6,7 @@ public enum StatusName {
     SCHEDULED("scheduled"),
     CANCELLED("cancelled");
 
-    private String status;
+    private final String status;
 
     StatusName(String status) { this.status = status; }
 

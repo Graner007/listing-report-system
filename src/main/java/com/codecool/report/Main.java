@@ -26,6 +26,7 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws SQLException, IOException, ParseException {
+        clearConsole();
         DatabaseConnection db = new DatabaseConnection();
 
         try {
@@ -68,10 +69,16 @@ public class Main {
                     case 6:
                         operation.exitProgram();
                 }
+
+                clearConsole();
             }
-        }
-        catch (PSQLException e) {
+        } catch (PSQLException e) {
             System.out.println(PrintColor.TEXT_RED.getUnicode() + "Can not connect to the database!" + PrintColor.TEXT_RESET.getUnicode());
         }
+    }
+
+    public static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

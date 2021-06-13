@@ -34,4 +34,12 @@ public class PropertyReader {
     protected String getFtpServerUsername() { return getPropertyFile().getProperty("ftp-username"); }
 
     protected String getFtpServerPassword() { return getPropertyFile().getProperty("ftp-password"); }
+
+    public String getPlantApiUrl() { return getPropertyFile().getProperty("plant-api-url"); }
+
+    public String getMarketplaceApiUrl() { return getPropertyFile().getProperty("marketplace-api-url"); }
+
+    public String getLocationApiUrl() { return getPropertyFile().getProperty("location-api-url"); }
+
+    public String getListingStatusApiUrl() { return getPropertyFile().getProperty("listing-status-api-url"); }
 }

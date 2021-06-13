@@ -1,5 +1,6 @@
 package com.codecool.report.service;
 
+import com.codecool.report.config.PropertyReader;
 import com.codecool.report.dao.LocationDao;
 import com.codecool.report.dao.MarketplaceDao;
 import com.codecool.report.dao.PlantDao;
@@ -32,7 +33,7 @@ public class PlantService {
     private final StatusDao statusDao;
     private final ImportLog importLog = new ImportLog();
     private final CsvOutputFormatter csvOutputFormatter = new CsvOutputFormatter();
-    private static final String PLANT_API = "https://my.api.mockaroo.com/listing?key=63304c70";
+    private final PropertyReader propertyReader = new PropertyReader();
 
     public Map<String, String> getBestEmailListerMonthly() { return plantDao.bestEmailListerMonthly(); }
 
@@ -65,7 +66,7 @@ public class PlantService {
     public int getTotalPlantCount() { return plantDao.getTotalCount(); }
 
     private List<Plant> downloadAllPlant() throws ParseException {
-        String data = ApiReader.getDataFromApi(PLANT_API);
+        String data = ApiReader.getDataFromApi(propertyReader.getPlantApiUrl());
         List<Plant> result = new ArrayList<>();
 
         JSONParser parse = new JSONParser();

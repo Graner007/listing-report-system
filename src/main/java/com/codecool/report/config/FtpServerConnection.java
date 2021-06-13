@@ -23,7 +23,7 @@ public class FtpServerConnection {
             client.login(propertyReader.getFtpServerUsername(), propertyReader.getFtpServerPassword());
             client.enterLocalPassiveMode();
 
-            File file = getLatestFileFromDir(DIRECTORY_PATH);
+            File file = getLatestFileFromDir();
             String filename = file.getName();
             fis = new FileInputStream(file.getAbsolutePath());
 
@@ -36,7 +36,7 @@ public class FtpServerConnection {
                 if (fis != null) {
                     fis.close();
                 }
-                System.out.println(PrintColor.TEXT_GREEN + "Json file uploaded." + PrintColor.TEXT_RESET);
+                System.out.println(PrintColor.TEXT_GREEN.getUnicode() + "Json file uploaded." + PrintColor.TEXT_RESET.getUnicode());
                 client.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -44,8 +44,8 @@ public class FtpServerConnection {
         }
     }
 
-    private File getLatestFileFromDir(String dirPath){
-        File dir = new File(dirPath);
+    private File getLatestFileFromDir(){
+        File dir = new File(DIRECTORY_PATH);
         File[] files = dir.listFiles();
 
         if (files == null || files.length == 0)

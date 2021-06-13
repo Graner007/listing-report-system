@@ -61,7 +61,7 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
                 return false;
             return true;
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
@@ -90,26 +90,6 @@ public class MarketplaceDaoJdbc implements MarketplaceDao {
             statement1.executeUpdate();
             PreparedStatement statement2 = conn.prepareStatement(sqlDeleteTableContent, Statement.RETURN_GENERATED_KEYS);
             statement2.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<Marketplace> getAll() {
-        return null;
-    }
-
-    @Override
-    public int getIdByName(String marketplaceName) {
-        try {
-            String sql = "SELECT id FROM marketplace WHERE marketplace_name = ?";
-            PreparedStatement st = conn.prepareStatement(sql);
-            st.setString(1, marketplaceName);
-            ResultSet rs = st.executeQuery();
-            if (!rs.next())
-                return 0;
-            return rs.getInt(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

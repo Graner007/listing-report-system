@@ -2,8 +2,6 @@ package com.codecool.report.dao.jdbc;
 
 import com.codecool.report.dao.LocationDao;
 import com.codecool.report.model.Location;
-import com.codecool.report.model.status.Status;
-import com.codecool.report.model.status.StatusName;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
@@ -38,11 +36,6 @@ public class LocationDaoJdbc implements LocationDao {
     }
 
     @Override
-    public Location find(UUID id) {
-        return null;
-    }
-
-    @Override
     public boolean isExist(UUID id) {
         try {
             String sql = "SELECT EXISTS (SELECT id FROM location WHERE id = ?)";
@@ -55,7 +48,7 @@ public class LocationDaoJdbc implements LocationDao {
                 return false;
             return true;
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
@@ -87,11 +80,6 @@ public class LocationDaoJdbc implements LocationDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<Location> getAll() {
-        return null;
     }
 
     @Override

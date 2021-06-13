@@ -1,0 +1,12 @@
+database={databaseName}
+database-username={databaseUsername}
+database-password={databasePassword}
+
+ftp-host={ftpServerHostname}
+ftp-username={ftpServerUsername}
+ftp-password={ftpServerPassword}
+
+plant-api-url={plant-api-url}
+location-api-url={location-api-url}
+marketplace-api-url={marketplace-api-url}
+listing-status-api-url={listing-status-api-url}

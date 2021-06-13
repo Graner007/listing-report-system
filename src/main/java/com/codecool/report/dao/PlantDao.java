@@ -8,7 +8,6 @@ import java.util.Map;
 public interface PlantDao {
 
     void add(Plant plant);
-    Plant find(int id);
     void removeAll();
     void update(Plant plant);
     boolean isEmpty();
@@ -23,6 +22,4 @@ public interface PlantDao {
     Map<String, Double> getTotalMarketplacePriceByNameMonthly(String name);
     Map<String, Double> getAverageMarketplacePriceByNameMonthly(String name);
     Map<String, String> bestEmailListerMonthly();
-
-    List<Plant> getAll();
 }
