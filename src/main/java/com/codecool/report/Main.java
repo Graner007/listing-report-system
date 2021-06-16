@@ -69,8 +69,6 @@ public class Main {
                     case 6:
                         operation.exitProgram();
                 }
-
-                clearConsole();
             }
         } catch (PSQLException e) {
             System.out.println(PrintColor.TEXT_RED.getUnicode() + "Can not connect to the database!" + PrintColor.TEXT_RESET.getUnicode());
