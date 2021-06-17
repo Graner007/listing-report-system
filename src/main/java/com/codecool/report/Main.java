@@ -67,6 +67,7 @@ public class Main {
                         operation.createReportAndUploadToFtpServer();
                         break;
                     case 6:
+                        conn.close();
                         operation.exitProgram();
                 }
             }
